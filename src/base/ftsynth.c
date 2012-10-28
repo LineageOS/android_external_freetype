@@ -4,7 +4,7 @@
 /*                                                                         */
 /*    FreeType synthesizing code for emboldening and slanting (body).      */
 /*                                                                         */
-/*  Copyright 2000-2001, 2002, 2003, 2004, 2005, 2006, 2010 by             */
+/*  Copyright 2000-2006, 2010, 2012 by                                     */
 /*  David Turner, Robert Wilhelm, and Werner Lemberg.                      */
 /*                                                                         */
 /*  This file is part of the FreeType project, and may only be used,       */
@@ -32,6 +32,7 @@
   /*                                                                       */
 #undef  FT_COMPONENT
 #define FT_COMPONENT  trace_synth
+
 
   /*************************************************************************/
   /*************************************************************************/
@@ -72,7 +73,7 @@
   /*************************************************************************/
   /*************************************************************************/
   /****                                                                 ****/
-  /****   EXPERIMENTAL EMBOLDENING/OUTLINING SUPPORT                    ****/
+  /****   EXPERIMENTAL EMBOLDENING SUPPORT                              ****/
   /****                                                                 ****/
   /*************************************************************************/
   /*************************************************************************/
@@ -87,7 +88,26 @@
     FT_Face     face    = slot->face;
     FT_Error    error;
     FT_Pos      xstr, ystr;
+#ifdef FT_CONFIG_OPTION_INFINALITY_PATCHSET 
+    int checked_use_various_tweaks_env = 0;
+    FT_Bool use_various_tweaks = FALSE;
 
+    if ( checked_use_various_tweaks_env == 0 )
+    {
+      char *use_various_tweaks_env = getenv( "INFINALITY_FT_USE_VARIOUS_TWEAKS" );
+      if ( use_various_tweaks_env != NULL )
+      {
+        if ( strcasecmp(use_various_tweaks_env, "default" ) != 0 )
+        {
+          if ( strcasecmp(use_various_tweaks_env, "true") == 0) use_various_tweaks = TRUE;
+          else if ( strcasecmp(use_various_tweaks_env, "1") == 0) use_various_tweaks = TRUE;
+          else if ( strcasecmp(use_various_tweaks_env, "on") == 0) use_various_tweaks = TRUE;
+          else if ( strcasecmp(use_various_tweaks_env, "yes") == 0) use_various_tweaks = TRUE;
+        }
+      }
+      checked_use_various_tweaks_env = 1;
+    }
+#endif
 
     if ( slot->format != FT_GLYPH_FORMAT_OUTLINE &&
          slot->format != FT_GLYPH_FORMAT_BITMAP  )
@@ -100,13 +120,13 @@
 
     if ( slot->format == FT_GLYPH_FORMAT_OUTLINE )
     {
+#ifdef FT_CONFIG_OPTION_INFINALITY_PATCHSET
+      if ( use_various_tweaks )
+        (void)FT_Outline_EmboldenXY( &slot->outline, xstr, FT_PIX_FLOOR( ystr ) );
+      else
+#endif
       /* ignore error */
-      (void)FT_Outline_Embolden( &slot->outline, xstr );
-
-      /* this is more than enough for most glyphs; if you need accurate */
-      /* values, you have to call FT_Outline_Get_CBox                   */
-      xstr = xstr * 2;
-      ystr = xstr;
+      (void)FT_Outline_EmboldenXY( &slot->outline, xstr, ystr );
     }
     else /* slot->format == FT_GLYPH_FORMAT_BITMAP */
     {
@@ -143,13 +163,13 @@
     if ( slot->advance.y )
       slot->advance.y += ystr;
 
-    slot->metrics.width        += xstr;
-    slot->metrics.height       += ystr;
-    slot->metrics.horiBearingY += ystr;
-    slot->metrics.horiAdvance  += xstr;
-    slot->metrics.vertBearingX -= xstr / 2;
-    slot->metrics.vertBearingY += ystr;
-    slot->metrics.vertAdvance  += ystr;
+    slot->metrics.width       += xstr;
+    slot->metrics.height      += ystr;
+#ifdef FT_CONFIG_OPTION_INFINALITY_PATCHSET
+    /*if ( !use_various_tweaks ) */
+#endif
+    slot->metrics.horiAdvance += xstr;
+    slot->metrics.vertAdvance += ystr;
 
     /* XXX: 16-bit overflow case must be excluded before here */
     if ( slot->format == FT_GLYPH_FORMAT_BITMAP )
