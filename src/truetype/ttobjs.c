@@ -1193,34 +1193,28 @@
   /*************************************************************************/
   /*                                                                       */
   /* <Function>                                                            */
-  /*    tt_size_reset                                                      */
+  /*   tt_size_reset_height                                                */
   /*                                                                       */
   /* <Description>                                                         */
-  /*    Reset a TrueType size when resolutions and character dimensions    */
-  /*    have been changed.                                                 */
+  /*   Recompute a TrueType size's ascender, descender, and height         */
+  /*   when resolutions and character dimensions have been changed.        */
+  /*   Used for variation fonts as an iterator function.                   */
   /*                                                                       */
   /* <Input>                                                               */
-  /*    size        :: A handle to the target size object.                 */
-  /*                                                                       */
-  /*    only_height :: Only recompute ascender, descender, and height.     */
+  /*   ft_size ::                                                          */
+  /*     A handle to the target TT_Size object. This function will be called*/
+  /*     through a `FT_Size_Reset_Func` pointer which takes `FT_Size`. This*/
+  /*     function must take `FT_Size` as a result. The passed `FT_Size` is */
+  /*     expected to point to a `TT_Size`.                                 */
   /*                                                                       */
   FT_LOCAL_DEF( FT_Error )
-  tt_size_reset( TT_Size  size,
-                 FT_Bool  only_height )
+  tt_size_reset_height( FT_Size  ft_size )
   {
-    TT_Face           face;
-    FT_Size_Metrics*  metrics;
-
-
-    face = (TT_Face)size->root.face;
-
-    /* nothing to do for CFF2 */
-    if ( face->isCFF2 )
-      return FT_Err_Ok;
+    TT_Size           size         = (TT_Size)ft_size;
+    TT_Face           face         = (TT_Face)size->root.face;
+    FT_Size_Metrics*  metrics      = &size->metrics;
 
     size->ttmetrics.valid = FALSE;
-
-    metrics = &size->metrics;
 
     /* copy the result from base layer */
     *metrics = size->root.metrics;
@@ -1244,8 +1238,34 @@
 
     size->ttmetrics.valid = TRUE;
 
-    if ( only_height )
-      return FT_Err_Ok;
+    return FT_Err_Ok;
+  }
+
+
+  /**************************************************************************
+   *
+   * @Function:
+   *   tt_size_reset
+   *
+   * @Description:
+   *   Reset a TrueType size when resolutions and character dimensions
+   *   have been changed.
+   *
+   * @Input:
+   *   size ::
+   *     A handle to the target size object.
+   */
+  FT_LOCAL_DEF( FT_Error )
+  tt_size_reset( TT_Size  size )
+  {
+    FT_Error          error;
+    TT_Face           face    = (TT_Face)size->root.face;
+    FT_Size_Metrics*  metrics = &size->metrics;
+
+
+    error = tt_size_reset_height( (FT_Size)size );
+    if ( error )
+      return error;
 
     if ( face->header.Flags & 8 )
     {
