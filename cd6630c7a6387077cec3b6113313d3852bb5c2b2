@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "197113c5_eb897a1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 26658
+      },
+      "writtenOn": "2023-07-08T09:19:54Z",
+      "side": 1,
+      "message": "```\nERROR: For 360951, could not determine the project path for project LineageOS/android_external_freetype\n```\nlooks like there\u0027s a repo missing",
+      "revId": "cd6630c7a6387077cec3b6113313d3852bb5c2b2",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
