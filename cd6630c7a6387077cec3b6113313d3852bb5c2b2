@@ -16,6 +16,24 @@
       "message": "```\nERROR: For 360951, could not determine the project path for project LineageOS/android_external_freetype\n```\nlooks like there\u0027s a repo missing",
       "revId": "cd6630c7a6387077cec3b6113313d3852bb5c2b2",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16fee507_cf1e122a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17656
+      },
+      "writtenOn": "2023-07-08T10:46:12Z",
+      "side": 1,
+      "message": "Manifest change was missing - cherry-picked from lineage-19.1 and pushed it to 18.1",
+      "parentUuid": "197113c5_eb897a1f",
+      "revId": "cd6630c7a6387077cec3b6113313d3852bb5c2b2",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
