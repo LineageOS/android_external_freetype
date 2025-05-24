@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "038d666a_5f38efa7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20587
+      },
+      "writtenOn": "2025-05-24T18:08:36Z",
+      "side": 1,
+      "message": "While this seems to fix what the CVE describes The ASB links this to https://android.googlesource.com/platform/external/freetype/+/f9c146bda91f441b7bebac4387e46ae40caaf3b1\n\nPicking d6fc8c6ba02b3c0e4260b5d309e6a6a0fac9541c and 47103b2f195e0f9664c9470182f063cb7d41dc9f first makes it apply cleanly.\n\nThe current version has a potential memory leak: At \"Exit1\" \"outline.points\" etc is freed which isn\u0027t set yet when an allocation fails.\n\nI have those 3 commits locally and can add them to this topic if you like",
+      "revId": "fc2cfc2acb7d351b5b287494f2616c8dc7f0e3b8",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
