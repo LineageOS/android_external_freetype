@@ -16,6 +16,24 @@
       "message": "The ASB links this to https://android.googlesource.com/platform/external/freetype/+/f9c146bda91f441b7bebac4387e46ae40caaf3b1\n\nPicking d6fc8c6ba02b3c0e4260b5d309e6a6a0fac9541c and 47103b2f195e0f9664c9470182f063cb7d41dc9f first makes it apply cleanly.\n\nThe current version has a potential memory leak: At \"Exit1\" \"outline.points\" etc is freed which isn\u0027t set yet when an allocation fails.",
       "revId": "f11d2dd5af1b2edc7dd71002e680473825a359dd",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aeb6161_0a05bd2c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20587
+      },
+      "writtenOn": "2025-05-24T12:07:03Z",
+      "side": 1,
+      "message": "FTR: The patch still fixes what seems to be referred to by CVE-2025-27363",
+      "parentUuid": "996e6f2a_87840dc9",
+      "revId": "f11d2dd5af1b2edc7dd71002e680473825a359dd",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ]
 }
